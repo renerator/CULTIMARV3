@@ -1,0 +1,125 @@
+﻿
+@{
+    ViewBag.Title = "FactoresMedicion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/WebJs/HomeJs/FactoresMedicion.js"></script>
+<div class="right_col" role="main">
+    <h3>@ViewBag.Message</h3>
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Factores de Medición</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <p class="text-muted font-13 m-b-30">
+                        En esta sección puedes ver un listado de los factores de medición que se encuentran activos, puedes crear uno nuevo.
+                    </p>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="table-responsive">
+                            @{
+                                var grid = new WebGrid(Model, canPage: false);
+                            }
+                            @grid.GetHtml(
+                                                            htmlAttributes: new { id = "tblFactoresMedicion" },
+                                                            tableStyle: "table table-bordered",
+                                                            columns:
+                                                                grid.Columns
+                                                                (
+                                                                    grid.Column(header: "Identificador", format: @<text>@item.IdFactor</text>),
+                                                                    grid.Column(header: "Nombre Factor", format: @<text>@item.NombreFactor</text>),
+                                                                    grid.Column(header: "Ultimo Tamizado", format: @<text>@item.UltimoTamizado.ToString("dd/MM/yyyy")</text>),
+                                                                    grid.Column(header: "Tipo Calibre", format: @<text>@item.NombreCalibre</text>),
+                                                                    grid.Column(header: "Ploidia", format: @<text>@item.Ploidia</text>),
+                                                                    grid.Column(header: "Volumen", format: @<text>@item.Volumen</text>),
+                                                                    grid.Column(header: "Editar", format: @<button class="btn btn-success" type="button" data-toggle="modal" tooltip="Editar Parametro" data-target="#modalFactorMedicion" onclick="EditaFactorMedicion(@item.IdFactor,'@item.NombreFactor', '@item.UltimoTamizado.ToString("dd/MM/yyyy")', '@item.idCalibre','@item.Ploidia','@item.Volumen')">Editar</button>))
+                                                                 )
+                        </div>
+                        <div class="form-group">
+                            <div>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalFactorMedicion">Agregar Nuevo Factor de Medición</button>
+                            </div>
+                        </div>
+                        <div id="modalFactorMedicion" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                        <h4 class="modal-title" id="myModalLabel">Agregar Factor de Medición</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h4>Ingrese los datos solicitados</h4>
+                                        <div class="x_content">
+                                            <br />
+                                            <input type="text" id="idFactor" style="display: none;">
+                                            <form class="form-horizontal form-label-left input_mask">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre Factor</label>
+                                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                                        <input type="text" required="required" class="form-control" id="nombreFactor" placeholder="Nombre Factor">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha último Tamizado</label>
+                                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                                        @*<input type="text" required="required" class="form-control" id="ultimoTamizado" placeholder="Ultimo Tamizado">*@
+                                                        <input type="text" class="form-control has-feedback-right" id="single_cal1" placeholder="01/01/0001" aria-describedby="inputSuccess2Status">
+                                                        <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                        <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tipo Calibre</label>
+                                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                                        @Html.DropDownList("TipoCalibre", (IEnumerable<SelectListItem>)ViewBag.SelectCalibre, "Tipo Calibre", new { @class = "form-control", @ID = "selectTipoCalibre" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Ploidia</label>
+                                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                                        <input type="text" required="required" class="form-control" id="ploidia" placeholder="Ploidia">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Volumen</label>
+                                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                                        <input type="text" required="required" class="form-control" id="volumen" placeholder="Volumen">
+                                                    </div>
+                                                </div>
+                                                <div class="ln_solid"></div>
+                                                <div class="form-group">
+                                                    <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                        <button class="btn btn-primary" type="reset">Resetear</button>
+                                                        <button type="submit" class="btn btn-success" id="btnGrabarDatos">Grabar</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" id="btnCerrarModal" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

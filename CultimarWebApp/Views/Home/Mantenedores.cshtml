@@ -1,0 +1,811 @@
+﻿
+@{
+    ViewBag.Title = "Mantenedores";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/WebJs/HomeJs/Mantenedores.js"></script>
+<div class="right_col" role="main">
+    <h3>@ViewBag.Message</h3>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Mantenedores</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <p class="text-muted font-13 m-b-30">
+                        Esta sección es la encargada de los parametros del sistema, mantenedores de Origen, Destino y otros parametros.
+                    </p>
+                </div>
+                @*<div class="col-md-9 col-sm-9 col-xs-12">
+                    @Html.ListBox("multiSelect", ViewBag.MultiSelector as MultiSelectList, new { @class = "select2_multiple form-control", @ID = "selectMultiple"})
+                </div>*@
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2><i class="fa fa-align-left"></i> Selecciona sobre el mantenedor que quieras trabajar <small>Uso exclusivo del Administrador</small></h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li>
+                                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                                <li>
+                                    <a class="close-link"><i class="fa fa-close"></i></a>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            
+                                <!-- start accordion -->
+                            <div class="accordion" id="accordion" role="tablist" aria-multiselectable="false">
+                                <!-- Parametros de Ubicacion Oceanica-->
+                                <div class="panel">
+                                    <a class="panel-heading" role="tab" id="headingCero" data-toggle="collapse" data-parent="#accordion" href="#collapseCero" aria-expanded="true" aria-controls="collapseCero">
+                                        <h4 class="panel-title">Mantenedor Ubicación Oceanica</h4>
+                                    </a>
+                                    <div id="collapseCero" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingCero">
+                                        <div class="panel-body">
+                                            <p>
+                                                <strong>En esta sección, podras agregar nuevas ubicaciones oceanicas o editar las existentes.</strong>
+                                            </p>
+                                            <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+
+                                                <div class="table-responsive">
+                                                    @{
+                            var gridParametrosTipoAlimentos = new WebGrid(source: ViewBag.ParametroUbicacionOceanica, canPage: false);
+                                                    }
+                                                    @gridParametrosTipoAlimentos.GetHtml(
+htmlAttributes: new { id = "tblParametrosTipoAlimentos" },
+tableStyle: "table table-bordered",
+columns:
+gridParametrosTipoAlimentos.Columns(
+gridParametrosTipoAlimentos.Column(header: "Identificador", format: @<text>@item.IdUbicacion</text>),
+gridParametrosTipoAlimentos.Column(header: "Nombre Ubicación", format: @<text>@item.NombreUbicacion</text>),
+gridParametrosTipoAlimentos.Column(header: "Estado", format: item => item.Estado ?
+Html.Raw("<i class='fa fa-thumbs-up' data-toggle='tooltip' data-placement='top' title='' data-original-title='Parametro Activo'></i>") : Html.Raw("<i class='fa fa-thumbs-down' data-toggle='tooltip' data-placement='top' title='' data-original-title='Parametro Inactivo'></i>")),
+gridParametrosTipoAlimentos.Column(header: "Editar", format: @<button class="btn btn-success" type="button" data-toggle="modal" tooltip="Editar Parametro" data-target="#modalPopUpIngresoTipoAlimento" onclick="EditaUbicacion(@item.IdUbicacion,'@item.NombreUbicacion')">Editar</button>))
+
+)
+                                                </div>
+                                                <div class="form-group">
+                                                    <div>
+                                                        <button type="reset" class="btn btn-primary" data-toggle="modal" data-target="#modalPopUpIngresoTipoAlimento" id="btnAgregaUbicacion">Agregar Ubicación Oceanica</button>
+                                                    </div>
+                                                </div>
+                                                <div id="modalPopUpIngresoTipoAlimento" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal">
+                                                                    <span aria-hidden="true">×</span>
+                                                                </button>
+                                                                <h4 class="modal-title" id="myModalLabel">Ubicación Oceanica</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <h4>Ingrese los datos solicitados</h4>
+                                                                <div class="x_content">
+                                                                    <br />
+                                                                    <input type="text" id="IdtipoAlimento" style="display: none;">
+                                                                    <form class="form-horizontal form-label-left input_mask">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre Ubicación Oceanica</label>
+                                                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                                <input type="text" required="required" class="form-control" id="nombreTipoAlimento">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="ln_solid"></div>
+                                                                        <div class="form-group">
+                                                                            <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                                                <button class="btn btn-primary" type="reset">Resetear</button>
+                                                                                <button type="submit" class="btn btn-success" id="btnGrabarParametrosTipoAlimento">Grabar</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" id="btnCerrarModalTipoAlimento" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Fin Parametros  Ubicacion Oceanica-->
+                                <!-- Parametros de Origen-->
+                                <div class="panel">
+                                    <a class="panel-heading collapsed" role="tab" id="headingOnes" data-toggle="collapse" data-parent="#accordion" href="#collapseOnes" aria-expanded="false" aria-controls="collapseOnes">
+                                        <h4 class="panel-title">Mantenedor Tipo Contenedores de Origen MicroAlgas</h4>
+                                    </a>
+                                    <div id="collapseOnes" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOnes">
+                                        <div class="panel-body">
+                                            <p>
+                                                <strong>En esta sección veras un listado con los parametros de los tipos de contenedores de Origen, podras agregar uno nuevo si así lo requieres</strong>
+                                            </p>
+                                            <div class="table-responsive">
+                                                @{
+                        var gridParametrosOrigen = new WebGrid(source: ViewBag.ParametrosOrigen, canPage: false);
+                                                }
+                                                @gridParametrosOrigen.GetHtml(
+htmlAttributes: new { id = "tblParametrosOrigen" },
+tableStyle: "table table-bordered",
+columns:
+gridParametrosOrigen.Columns(
+gridParametrosOrigen.Column(header: "Identificador", format: @<text>@item.IdOrigen</text>),
+gridParametrosOrigen.Column(header: "Nombre Origen", format: @<text>@item.NombreOrigen</text>),
+gridParametrosOrigen.Column(header: "Estado", format: item => item.Estado ?
+Html.Raw("<i class='fa fa-thumbs-up' data-toggle='tooltip' data-placement='top' title='' data-original-title='Parametro Activo'></i>") : Html.Raw("<i class='fa fa-thumbs-down' data-toggle='tooltip' data-placement='top' title='' data-original-title='Parametro Inactivo'></i>")),
+gridParametrosOrigen.Column(header: "Editar", format: @<button class="btn btn-success" type="button" data-toggle="modal" tooltip="Editar Parametro" data-target="#modalPopUpIngresoOrigen" onclick="EditaOrigen(@item.IdOrigen,'@item.NombreOrigen')">Editar</button>))
+
+)
+                                            </div>
+                                            <div class="form-group">
+                                                <div>
+                                                    <button type="reset" class="btn btn-primary" data-toggle="modal" data-target="#modalPopUpIngresoOrigen">Agregar Nuevo Origen</button>
+                                                </div>
+                                            </div>
+                                            <div id="modalPopUpIngresoOrigen" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">
+                                                                <span aria-hidden="true">×</span>
+                                                            </button>
+                                                            <h4 class="modal-title" id="myModalLabel">Tipo Contenedor Origen</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h4>Ingrese los datos solicitados</h4>
+                                                            <div class="x_content">
+                                                                <br />
+                                                                <input type="text" id="Idorigen" style="display: none;">
+                                                                <form class="form-horizontal form-label-left input_mask">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre Parametro Origen</label>
+                                                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                            <input type="text" required="required" class="form-control" id="nombreOrigen">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="ln_solid"></div>
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                                            <button class="btn btn-primary" type="reset">Resetear</button>
+                                                                            <button type="submit" class="btn btn-success" id="btnGrabarParametrosOrigen">Grabar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" id="btnCerrarModalOrigen" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Fin Parametros de Origen-->
+                                <!-- Parametros de Destino-->
+                                <div class="panel">
+                                    <a class="panel-heading collapsed" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        <h4 class="panel-title">Mantenedor de Tipo Contenedores Destino MicroAlgas</h4>
+                                    </a>
+                                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                        <div class="panel-body">
+                                            <p>
+                                                <strong>En esta sección veras un listado con los parametros de los tipos de contenedores de destino, podras agregar uno nuevo si así lo requieres</strong>
+                                            </p>
+                                            <div class="table-responsive">
+                                                @{
+                        var gridDestino = new WebGrid(source: ViewBag.ParametrosDestino, canPage: false);
+                                                }
+                                                @gridDestino.GetHtml(
+htmlAttributes: new { id = "tblParametrosDestino" },
+tableStyle: "table table-bordered",
+columns:
+gridDestino.Columns(
+gridDestino.Column(header: "Identificador", format: @<text>@item.IdDestino</text>),
+gridDestino.Column(header: "Nombre Destino", format: @<text>@item.NombreDestino</text>),
+gridDestino.Column(header: "Estado", format: item => item.Estado ?
+Html.Raw("<i class='fa fa-thumbs-up' data-toggle='tooltip' data-placement='top' title='' data-original-title='Parametro Activo'></i>") : Html.Raw("<i class='fa fa-thumbs-down' data-toggle='tooltip' data-placement='top' title='' data-original-title='Parametro Inactivo'></i>")),
+gridDestino.Column(header: "Editar", format: @<button class="btn btn-success" type="button" data-toggle="modal" tooltip="Editar Parametro" data-target="#modalPopUpIngresoDestino" onclick="EditaDestino(@item.IdDestino,'@item.NombreDestino')">Editar</button>))
+)
+                                            </div>
+                                            <div class="form-group">
+                                                <div>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPopUpIngresoDestino">Agregar Nuevo Destino</button>
+                                                </div>
+                                            </div>
+                                            <div id="modalPopUpIngresoDestino" class="modal fade bs-example-modal-lg" tabindex="-2" role="dialog" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">
+                                                                <span aria-hidden="true">×</span>
+                                                            </button>
+                                                            <h4 class="modal-title" id="myModalLabel">Tipo Contenedor Destino</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h4>Ingrese los datos solicitados</h4>
+                                                            <div class="x_content">
+                                                                <br />
+                                                                <input type="text" id="IdDestino" style="display: none;">
+
+                                                                <form class="form-horizontal form-label-left input_mask">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre Parametro Destino</label>
+                                                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                            <input type="text" required="required" class="form-control has-feedback-left" id="nombreDestino" placeholder="Nombre Destino">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="ln_solid"></div>
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                                            <button class="btn btn-primary" type="reset">Resetear</button>
+                                                                            <button type="submit" class="btn btn-success" id="btnGrabarParametrosDestino">Grabar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" id="btnCerrarModalDestino" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Fin Parametros de Destino-->
+                                <!-- Parametros de Tipo Contenedor-->
+                                <div class="panel">
+                                    <a class="panel-heading collapsed" role="tab" id="headingThree" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseThree">
+                                        <h4 class="panel-title">Mantenedor de Tipos de Contenedores Larvas, Fijación y Semillas</h4>
+                                    </a>
+                                    <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                                        <div class="panel-body">
+                                            <p>
+                                                <strong>En esta sección veras un listado con los parametros de Tipos de Contenedores de Larvas y Fijación, podras agregar uno nuevo o editar algún registro si así lo requieres</strong>
+                                            </p>
+                                            <div class="table-responsive">
+                                                @{
+                        var gridTipoContenedor = new WebGrid(source: ViewBag.ParametrosTipoContenedor, canPage: false);
+                                                }
+                                                @gridTipoContenedor.GetHtml(
+htmlAttributes: new { id = "tblParametrosTipoContenedor" },
+tableStyle: "table table-bordered",
+columns:
+gridTipoContenedor.Columns(
+gridTipoContenedor.Column(header: "Identificador", format: @<text>@item.IdContenedor</text>),
+gridTipoContenedor.Column(header: "Nombre Contenedor", format: @<text>@item.NombreContenedor</text>),
+gridTipoContenedor.Column(header: "Tipo Contenedor", format: @<text>@item.TipoContenedor</text>),
+gridTipoContenedor.Column(header: "Estado", format: item => item.Estado ?
+Html.Raw("<i class='fa fa-thumbs-up' data-toggle='tooltip' data-placement='top' title='' data-original-title='Parametro Activo'></i>") : Html.Raw("<i class='fa fa-thumbs-down' data-toggle='tooltip' data-placement='top' title='' data-original-title='Parametro Inactivo'></i>")),
+gridTipoContenedor.Column(header: "Editar", format: @<button class="btn btn-success" type="button" data-toggle="modal" tooltip="Editar Parametro" data-target="#modalPopUpIngresoTipoContenedor" onclick="EditaTipoContenedor(@item.IdContenedor,'@item.NombreContenedor','@item.TipoContenedor')">Editar</button>))
+)
+                                            </div>
+                                            <div class="form-group">
+
+                                                <div>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPopUpIngresoTipoContenedor">Agregar Nuevo Tipo Contenedor</button>
+                                                </div>
+                                            </div>
+                                            <div id="modalPopUpIngresoTipoContenedor" class="modal fade bs-example-modal-lg" tabindex="-2" role="dialog" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">
+                                                                <span aria-hidden="true">×</span>
+                                                            </button>
+                                                            <h4 class="modal-title" id="myModalLabel">Agregar Tipo Contenedor</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h4>Ingrese los datos solicitados</h4>
+                                                            <div class="x_content">
+                                                                <br />
+                                                                <input type="text" id="IdTipoContenedor" style="display: none;">
+
+                                                                <form class="form-horizontal form-label-left input_mask">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre Contenedor</label>
+                                                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                            <input type="text" required="required" class="form-control has-feedback-left" id="nombreContenedor" placeholder="Nombre Contenedor">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre Tipo Contenedor</label>
+                                                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                            <input type="text" required="required" class="form-control has-feedback-left" id="tipoContenedor" placeholder="Tipo Contenedor">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="ln_solid"></div>
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                                            <button class="btn btn-primary" type="reset">Resetear</button>
+                                                                            <button type="submit" class="btn btn-success" id="btnGrabarParametrosTipoContenedor">Grabar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" id="btnCerrarModalTipoContenedor" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Fin Parametros de Tipo Contenedor-->
+                                <!-- Parametros de Calibre-->
+                                <div class="panel">
+                                    <a class="panel-heading collapsed" role="tab" id="headingEight" data-toggle="collapse" data-parent="#accordion" href="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                                        <h4 class="panel-title">Mantenedor de Calibres Larvas, Fijación y Semillas</h4>
+                                    </a>
+                                    <div id="collapseEight" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEight">
+                                        <div class="panel-body">
+                                            <p>
+                                                <strong>En esta sección veras un listado con los parametros de Calibres que serán utilizados en los ingresos y seguimientos que corresponda.</strong>
+                                            </p>
+                                            <div class="table-responsive">
+                                                @{
+                        var gridCalibre = new WebGrid(source: ViewBag.ParametroCalibre, canPage: false);
+                                                }
+                                                @gridCalibre.GetHtml(
+htmlAttributes: new { id = "tblParametrosCalibre" },
+tableStyle: "table table-bordered",
+columns:
+gridCalibre.Columns(
+gridCalibre.Column(header: "Identificador", format: @<text>@item.IdCalibre</text>),
+gridCalibre.Column(header: "Calibre", format: @<text>@item.NombreCalibre</text>),
+gridCalibre.Column(header: "Descripción", format: @<text>@item.DescripcionCalibre</text>),
+gridCalibre.Column(header: "Estado", format: item => item.Estado ?
+Html.Raw("<i class='fa fa-thumbs-up' data-toggle='tooltip' data-placement='top' title='' data-original-title='Parametro Activo'></i>") : Html.Raw("<i class='fa fa-thumbs-down' data-toggle='tooltip' data-placement='top' title='' data-original-title='Parametro Inactivo'></i>")),
+gridCalibre.Column(header: "Editar", format: @<button class="btn btn-success" type="button" data-toggle="modal" tooltip="Editar Parametro" data-target="#modalPopUpIngresoCalibre" onclick="EditaCalibre(@item.IdCalibre,'@item.NombreCalibre','@item.DescripcionCalibre')">Editar</button>))
+)
+                                            </div>
+                                            <div class="form-group">
+                                                <div>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPopUpIngresoCalibre">Agregar Nuevo Calibre</button>
+                                                </div>
+                                            </div>
+                                            <div id="modalPopUpIngresoCalibre" class="modal fade bs-example-modal-lg" tabindex="-2" role="dialog" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">
+                                                                <span aria-hidden="true">×</span>
+                                                            </button>
+                                                            <h4 class="modal-title" id="myModalLabel">Calibres</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h4>Ingrese los datos solicitados</h4>
+                                                            <div class="x_content">
+                                                                <br />
+                                                                <input type="text" id="idCalibre" style="display: none;">
+                                                                <form class="form-horizontal form-label-left input_mask">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre Calibre</label>
+                                                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                            <input type="text" required="required" class="form-control has-feedback-left" id="nombreCalibre" placeholder="Nombre Calibre">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Descripción Calibre</label>
+                                                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                            <textarea id="descripcionCalibre" required="required" class="form-control" name="descripcionCalibre" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="300" data-parsley-minlength-message="Ingrese una descripción breve del calibre" data-parsley-validation-threshold="10"></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="ln_solid"></div>
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                                            <button class="btn btn-primary" type="reset">Resetear</button>
+                                                                            <button type="submit" class="btn btn-success" id="btnGrabarParametrosCalibre">Grabar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" id="btnCerrarModalCalibre" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Fin Parametros de Calibre-->
+                                <!-- Parametros de Especies-->
+                                <div class="panel">
+                                    <a class="panel-heading collapsed" role="tab" id="headingThree" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                        <h4 class="panel-title">Mantenedor de Especies</h4>
+                                    </a>
+                                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                        <div class="panel-body">
+                                            <p>
+                                                <strong>En esta sección veras un listado con los parametros de Especies, podras agregar uno nuevo si así lo requieres</strong>
+                                            </p>
+                                            <div class="table-responsive">
+                                                @{
+                        var gridEspecies = new WebGrid(source: ViewBag.ParametrosEspecies, canPage: false);
+                                                }
+                                                @gridEspecies.GetHtml(
+htmlAttributes: new { id = "tblParametrosEspecies" },
+tableStyle: "table table-bordered",
+columns:
+gridEspecies.Columns(
+gridEspecies.Column(header: "Identificador", format: @<text>@item.IdEspecies</text>),
+gridEspecies.Column(header: "Nombre Especie", format: @<text>@item.NombreEspecies</text>),
+gridEspecies.Column(header: "Estado", format: item => item.Estado ?
+Html.Raw("<i class='fa fa-thumbs-up' data-toggle='tooltip' data-placement='top' title='' data-original-title='Parametro Activo'></i>") : Html.Raw("<i class='fa fa-thumbs-down' data-toggle='tooltip' data-placement='top' title='' data-original-title='Parametro Inactivo'></i>")),
+gridEspecies.Column(header: "Editar", format: @<button class="btn btn-success" type="button" data-toggle="modal" tooltip="Editar Parametro" data-target="#modalPopUpIngresoEspecies" onclick="EditaEspecies(@item.IdEspecies,'@item.NombreEspecies')">Editar</button>))
+)
+                                            </div>
+                                            <div class="form-group">
+                                                <div>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPopUpIngresoEspecies">Agregar Nueva Especie</button>
+                                                </div>
+                                            </div>
+                                            <div id="modalPopUpIngresoEspecies" class="modal fade bs-example-modal-lg" tabindex="-2" role="dialog" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">
+                                                                <span aria-hidden="true">×</span>
+                                                            </button>
+                                                            <h4 class="modal-title" id="myModalLabel">Agregar Especies</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h4>Ingrese los datos solicitados</h4>
+                                                            <div class="x_content">
+                                                                <br />
+                                                                <input type="text" id="IdEspecies" style="display: none;">
+
+                                                                <form class="form-horizontal form-label-left input_mask">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre Parametro Especie</label>
+                                                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                            <input type="text" required="required" class="form-control has-feedback-left" id="nombreEspecies" placeholder="Nombre Especie">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="ln_solid"></div>
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                                            <button class="btn btn-primary" type="reset">Resetear</button>
+                                                                            <button type="submit" class="btn btn-success" id="btnGrabarParametrosEspecies">Grabar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" id="btnCerrarModalEspecies" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Fin Parametros de Especies-->
+                                <!-- Parametros de Tipo de Mortalidad-->
+                                <div class="panel">
+                                    <a class="panel-heading collapsed" role="tab" id="headingSix" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                                        <h4 class="panel-title">Mantenedor de Tipos de Mortalidad</h4>
+                                    </a>
+                                    <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
+                                        <div class="panel-body">
+                                            <p>
+                                                <strong>En esta sección veras un listado con los parametros de los tipos de Mortalidad, podras agregar uno nuevo si así lo requieres</strong>
+                                            </p>
+                                            <div class="table-responsive">
+                                                @{
+                        var gridTipoMortalidad = new WebGrid(source: ViewBag.ParametrosTipoMortalidad, canPage: false);
+                                                }
+                                                @gridTipoMortalidad.GetHtml(
+htmlAttributes: new { id = "tblParametrosTipoMortalidad" },
+tableStyle: "table table-bordered",
+columns:
+gridTipoMortalidad.Columns(
+gridTipoMortalidad.Column(header: "Identificador", format: @<text>@item.IdMortalidad</text>),
+gridTipoMortalidad.Column(header: "Nombre Tipo Mortalidad", format: @<text>@item.NombreMortalidad</text>),
+gridTipoMortalidad.Column(header: "Estado", format: item => item.Estado ?
+Html.Raw("<i class='fa fa-thumbs-up' data-toggle='tooltip' data-placement='top' title='' data-original-title='Parametro Activo'></i>") : Html.Raw("<i class='fa fa-thumbs-down' data-toggle='tooltip' data-placement='top' title='' data-original-title='Parametro Inactivo'></i>")),
+gridTipoMortalidad.Column(header: "Editar", format: @<button class="btn btn-success" type="button" data-toggle="modal" tooltip="Editar Parametro" data-target="#modalPopUpIngresoTipoMortalidad" onclick="EditaTipoMortalidad(@item.IdMortalidad,'@item.NombreMortalidad')">Editar</button>))
+)
+                                            </div>
+                                            <div class="form-group">
+                                                <div>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPopUpIngresoTipoMortalidad">Agregar Nuevo Tipo Mortalidad</button>
+                                                </div>
+                                            </div>
+                                            <div id="modalPopUpIngresoTipoMortalidad" class="modal fade bs-example-modal-lg" tabindex="-2" role="dialog" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">
+                                                                <span aria-hidden="true">×</span>
+                                                            </button>
+                                                            <h4 class="modal-title" id="myModalLabel">Tipos de Mortalidad</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h4>Ingrese los datos solicitados</h4>
+                                                            <div class="x_content">
+                                                                <br />
+                                                                <input type="text" id="idTipoMortalidad" style="display: none;">
+
+                                                                <form class="form-horizontal form-label-left input_mask">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre Tipo Mortalidad</label>
+                                                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                            <input type="text" required="required" class="form-control has-feedback-left" id="nombreTipoMortalidad" placeholder="Nombre Tipo Mortalidad">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="ln_solid"></div>
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                                            <button class="btn btn-primary" type="reset">Resetear</button>
+                                                                            <button type="submit" class="btn btn-success" id="btnGrabarParametrosTipoMortalidad">Grabar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" id="btnCerrarModalTipoMortalidad" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Fin Parametros de Tipo de Mortalidad-->
+                                <!-- Parametros de Tipo de Sistema-->
+                                <div class="panel">
+                                    <a class="panel-heading collapsed" role="tab" id="headingSeven" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="false" aria-controls="collapseEight">
+                                        <h4 class="panel-title">Mantenedor de Tipo de Sistema</h4>
+                                    </a>
+                                    <div id="collapseSeven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeven">
+                                        <div class="panel-body">
+                                            <p>
+                                                <strong>En esta sección veras un listado con los parametros de Tipos de Sistema, podras agregar uno nuevo si así lo requieres</strong>
+                                            </p>
+                                            <div class="table-responsive">
+                                                @{
+                        var gridTipoSistema = new WebGrid(source: ViewBag.ParametrosTipoSistema, canPage: false);
+                                                }
+                                                @gridTipoSistema.GetHtml(
+htmlAttributes: new { id = "tblParametrosTipoSistema" },
+tableStyle: "table table-bordered",
+columns:
+gridTipoSistema.Columns(
+gridTipoSistema.Column(header: "Identificador", format: @<text>@item.IdTipoSistema</text>),
+gridTipoSistema.Column(header: "Nombre Tipo Sistema", format: @<text>@item.NombreSistema</text>),
+gridTipoSistema.Column(header: "Estado", format: item => item.Estado ?
+Html.Raw("<i class='fa fa-thumbs-up' data-toggle='tooltip' data-placement='top' title='' data-original-title='Parametro Activo'></i>") : Html.Raw("<i class='fa fa-thumbs-down' data-toggle='tooltip' data-placement='top' title='' data-original-title='Parametro Inactivo'></i>")),
+gridTipoSistema.Column(header: "Editar", format: @<button class="btn btn-success" type="button" data-toggle="modal" tooltip="Editar Parametro" data-target="#modalPopUpIngresoTipoSistema" onclick="EditaTipoSistema(@item.IdTipoSistema,'@item.NombreSistema')">Editar</button>))
+)
+                                            </div>
+                                            <div class="form-group">
+                                                <div>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPopUpIngresoTipoSistema">Agregar Nuevo Tipo Sistema</button>
+                                                </div>
+                                            </div>
+                                            <div id="modalPopUpIngresoTipoSistema" class="modal fade bs-example-modal-lg" tabindex="-2" role="dialog" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">
+                                                                <span aria-hidden="true">×</span>
+                                                            </button>
+                                                            <h4 class="modal-title" id="myModalLabel">Tipo Sistema</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h4>Ingrese los datos solicitados</h4>
+                                                            <div class="x_content">
+                                                                <br />
+                                                                <input type="text" id="idTipoSistema" style="display: none;">
+                                                                <form class="form-horizontal form-label-left input_mask">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre Tipo Sistema</label>
+                                                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                            <input type="text" required="required" class="form-control has-feedback-left" id="nombreTipoSistema" placeholder="Nombre Tipo Sistema">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="ln_solid"></div>
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                                            <button class="btn btn-primary" type="reset">Resetear</button>
+                                                                            <button type="submit" class="btn btn-success" id="btnGrabarParametrosTipoSistema">Grabar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" id="btnCerrarModalTipoSistema" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Fin Parametros de Tipo de Sistema-->
+                                <!-- Parametros de Nombre de BATCH-->
+                                <div class="panel">
+                                    <a class="panel-heading collapsed" role="tab" id="headingFive" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                        <h4 class="panel-title">Mantenedor de Nombres de BATCH</h4>
+                                    </a>
+                                    <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+                                        <div class="panel-body">
+                                            <p>
+                                                <strong>En esta sección veras un listado con los nombres de BATCH, podras agregar uno nuevo o editar uno si así lo requieres</strong>
+                                            </p>
+                                            <div class="table-responsive">
+                                                @{
+                        var gridTipoIdentificacion = new WebGrid(source: ViewBag.ParametrosTipoIdentificacion, canPage: false);
+                                                }
+                                                @gridTipoIdentificacion.GetHtml(
+htmlAttributes: new { id = "tblParametrosTipoIdentificacion" },
+tableStyle: "table table-bordered",
+columns:
+gridTipoIdentificacion.Columns(
+gridTipoIdentificacion.Column(header: "Identificador", format: @<text>@item.IdIdentificacion</text>),
+gridTipoIdentificacion.Column(header: "Nombre BATCH", format: @<text>@item.NombreIdentificacion</text>),
+gridTipoIdentificacion.Column(header: "Estado", format: item => item.Estado ?
+Html.Raw("<i class='fa fa-thumbs-up' data-toggle='tooltip' data-placement='top' title='' data-original-title='Parametro Activo'></i>") : Html.Raw("<i class='fa fa-thumbs-down' data-toggle='tooltip' data-placement='top' title='' data-original-title='Parametro Inactivo'></i>")),
+gridTipoIdentificacion.Column(header: "Editar", format: @<button class="btn btn-success" type="button" data-toggle="modal" tooltip="Editar Parametro" data-target="#modalPopUpIngresoTipoIdentificador" onclick="EditaTipoIdentificacion(@item.IdIdentificacion,'@item.NombreIdentificacion')">Editar</button>))
+)
+                                            </div>
+                                            <div class="form-group">
+                                                <div>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPopUpIngresoTipoIdentificador">Agregar Nuevo BATCH</button>
+                                                </div>
+                                            </div>
+                                            <div id="modalPopUpIngresoTipoIdentificador" class="modal fade bs-example-modal-lg" tabindex="-2" role="dialog" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">
+                                                                <span aria-hidden="true">×</span>
+                                                            </button>
+                                                            <h4 class="modal-title" id="myModalLabel">Nombre BATCH</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h4>Ingrese los datos solicitados</h4>
+                                                            <div class="x_content">
+                                                                <br />
+                                                                <input type="text" id="idTipoIdentificacion" style="display: none;">
+
+                                                                <form class="form-horizontal form-label-left input_mask">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre del BATCH</label>
+                                                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                            <input type="text" required="required" class="form-control has-feedback-left" id="nombreTipoIdentificacion" placeholder="Nombre Tipo Identificación">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="ln_solid"></div>
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                                            <button class="btn btn-primary" type="reset">Resetear</button>
+                                                                            <button type="submit" class="btn btn-success" id="btnGrabarParametrosTipoIdentificacion">Grabar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" id="btnCerrarModalTipoIdentificacion" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Fin Parametros de Nombre de BATCH-->
+                                <!-- Inicio Parametros de Nombre de Destino Despacho-->
+                                <div class="panel">
+                                    <a class="panel-heading collapsed" role="tab" id="headingFive" data-toggle="collapse" data-parent="#accordion" href="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                                        <h4 class="panel-title">Mantenedor de Nombres de Destino Despacho</h4>
+                                    </a>
+                                    <div id="collapseNine" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingNine">
+                                        <div class="panel-body">
+                                            <p>
+                                                <strong>En esta sección veras un listado con los nombres de los destinos de Despacho ingresados, podras agregar uno nuevo o editar uno si así lo requieres</strong>
+                                            </p>
+                                            <div class="table-responsive">
+                                                @{
+        var gridDestinosDespacho = new WebGrid(source: ViewBag.ParametroDestinoDespacho, canPage: false);
+                                                }
+                                                @gridDestinosDespacho.GetHtml(
+htmlAttributes: new { id = "tblParametrosDestinoDespacho" },
+tableStyle: "table table-bordered",
+columns:
+gridDestinosDespacho.Columns(
+gridDestinosDespacho.Column(header: "Identificador", format: @<text>@item.IdDestinoDespacho</text>),
+gridDestinosDespacho.Column(header: "Nombre Destino", format: @<text>@item.NombreDestinoDespacho</text>),
+gridDestinosDespacho.Column(header: "Estado", format: item => item.Estado ?
+Html.Raw("<i class='fa fa-thumbs-up' data-toggle='tooltip' data-placement='top' title='' data-original-title='Parametro Activo'></i>") : Html.Raw("<i class='fa fa-thumbs-down' data-toggle='tooltip' data-placement='top' title='' data-original-title='Parametro Inactivo'></i>")),
+gridDestinosDespacho.Column(header: "Editar", format: @<button class="btn btn-success" type="button" data-toggle="modal" tooltip="Editar Parametro" data-target="#modalPopUpIngresodestinoDespacho" onclick="EditaDestinoDespacho(@item.IdDestinoDespacho,'@item.NombreDestinoDespacho')">Editar</button>))
+)
+                                            </div>
+                                            <div class="form-group">
+                                                <div>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" id="btnNuevoDestinoDespacho" data-target="#modalPopUpIngresodestinoDespacho">Agregar Nuevo Destino Despacho</button>
+                                                </div>
+                                            </div>
+                                            <div id="modalPopUpIngresodestinoDespacho" class="modal fade bs-example-modal-lg" tabindex="-2" role="dialog" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">
+                                                                <span aria-hidden="true">×</span>
+                                                            </button>
+                                                            <h4 class="modal-title" id="myModalLabel">Nombre Destino</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <h4>Ingrese los datos solicitados</h4>
+                                                            <div class="x_content">
+                                                                <br />
+                                                                <input type="text" id="idDestinoDespacho" style="display: none;">
+
+                                                                <form class="form-horizontal form-label-left input_mask">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre del Destino</label>
+                                                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                            <input type="text" required="required" class="form-control has-feedback-left" id="nombreDestinoDespacho" placeholder="Nombre Destino Despacho">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="ln_solid"></div>
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                                            <button class="btn btn-primary" type="reset">Resetear</button>
+                                                                            <button type="submit" class="btn btn-success" id="btnGrabaDestinoDespacho">Grabar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" id="btnCerrarModalDestinoDespacho" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Fin Destino Despacho-->
+                            </div>
+                                <!-- end of accordion -->
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+           </div>
+        </div>
+    </div>
+</div>
+

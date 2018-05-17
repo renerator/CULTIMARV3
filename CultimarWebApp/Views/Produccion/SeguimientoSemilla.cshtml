@@ -1,0 +1,257 @@
+﻿
+@{
+    ViewBag.Title = "SeguimientoSemilla";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/WebJs/ProduccionJS/SeguimientoSemilla.js"></script>
+
+<div class="right_col" role="main">
+    <h3>@ViewBag.Message</h3>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Listado de Seguimiento Semilla</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <p class="text-muted font-13 m-b-30">
+                        Este listado muestra los seguimiento de semillas existentes del sistema
+                    </p>
+                    <div class="table-responsive">
+                        @{
+        var grid = new WebGrid(Model, canPage: false);
+                        }
+                        @grid.GetHtml(
+htmlAttributes: new { id = "tblSeguimientosSemilla" },
+exclusions: new[] { "idOrigen", "IdDestino", "IdFactoresMedicion" },
+tableStyle: "table table-bordered",
+columns:
+grid.Columns(
+grid.Column(header: "Contenedor Origen", format: @<text>@item.NombreContenedororigen</text>),
+grid.Column(header: "BATCH", format: @<text>@item.NombreRegistroLarval</text>),
+grid.Column(header: "FechaRegistro", format: @<text>@item.FechaRegistro1.ToString("dd/MM/yyyy") </text>),
+grid.Column(header: "Contenedor Destino", format: @<text>@item.NombreContenedorDestino</text>),
+grid.Column(header: "Calibre Origen", format: @<text>@item.NombreCalibreOrigen</text>),
+grid.Column(header: "Calibre Destino", format: @<text>@item.NombreCalibreDestino</text>),
+grid.Column(header: "Volumen Total Registrado", format: @<text>@item.VolumenTotal</text>),
+grid.Column(format: @<button class="btn btn-success" type="button" data-toggle="modal" tooltip="Editar Parametro" data-target="#modalPopUpIngresoUsuario" onclick="EditaSeguimientoInicialSemilla(@item.IdSeguimientoSemilla,
+                                                                                                                                                                                                     @item.IdRegistroLarval,
+                                                                                                                                                                                                     @item.IdTipoContenedorOrigen,
+                                                                                                                                                                                                     '@item.FechaRegistro1.ToString("MM/dd/yyyy")',
+                                                                                                                                                                                                     @item.IdMortalidad,
+                                                                                                                                                                                                     '@item.FactoresMedicion',
+                                                                                                                                                                                                     @item.CantidadOrigen,
+                                                                                                                                                                                                     @item.idOrigen,
+                                                                                                                                                                                                     @item.CantidadDestino,
+                                                                                                                                                                                                     @item.IdDestino,
+                                                                                                                                                                                                     @item.IdTipoContenedorDestino,
+                                                                                                                                                                                                     @item.CantidadMuestra,
+                                                                                                                                                                                                     @item.VolumenMuestra,
+                                                                                                                                                                                                     '@item.VolumenTotal',
+                                                                                                                                                                                                     '@item.Observaciones',
+                                                                                                                                                                                                     '@item.ZonaCultivo', @item.CantidadMortalidad, '@item.LitrosdecimalContenedor')">
+    Editar
+</button>)
+
+))
+
+                    </div>
+
+                    <div id="divAlert"></div>
+                    <div class="form-group">
+                        <div>
+                            <button type="button" id="btnAgregaSeguimientoSemilla" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Agregar Seguimiento Semilla</button>
+                        </div>
+                    </div>
+
+                    <div id="modalPopUpIngresoUsuario" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">
+                                        <span aria-hidden="true">X</span>
+                                    </button>
+                                    <h4 class="modal-title" id="myModalLabel">Seguimiento Semilla</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+
+
+                                        <div style="display: none;">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="IdSemilla">
+                                                Id Semilla <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text" id="IdSemilla" value="-1" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Seleccione Contenedor Origen<span class="required">*</span></label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.DropDownList("selectOrigen", (IEnumerable<SelectListItem>)ViewBag.ZonaCultivo, "Seleccione Contenedor de Origen", new { @class = "form-control", @required = "required", @ID = "selectOrigen" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Nombre BATCH <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.DropDownList("NombreCultivo", (IEnumerable<SelectListItem>)ViewBag.NombreCultivo, "Seleccion BATCH", new { @class = "form-control", @required = "required", @ID = "NombreCultivo" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Seleccione Zona de Cultivo<span class="required">*</span></label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <select class="select2_single form-control" required="required" id="selectZonaCultivo">
+                                                    <option value="">Selecciona Zona de Cultivo</option>
+                                                    <option value="PreSemillero">PreSemillero</option>
+                                                    <option value="Nursery">Nursery Estero</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                                Fecha Registro <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-xs-12 xdisplay_inputx form-group has-feedback-right">
+                                                <input id="single_cal1" name="idFechaRegistro" type="text" class="form-control has-feedback-right" placeholder="Fecha" aria-describedby="inputSuccess2Status">
+                                                <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                <span id="inputSuccess2Status" class="sr-only">(success)</span>
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Mortalidad<span class="required">*</span></label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.DropDownList("selectMortalidad", (IEnumerable<SelectListItem>)ViewBag.selectTipoM, "Seleccione Tipo Mortalidad", new { @class = "form-control", @required = "required", @ID = "selectMortalidad" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Cantidad Mortalidad<span class="required">*</span></label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="number" id="CantidadMortalidad" name="CantidadMortalidad" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Factor Medición</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+
+                                                @Html.ListBox("FactorM", ViewBag.FactorM as MultiSelectList, new { @class = "select2_multiple form-control", @required = "required", @ID = "FactorM" })
+
+                                            </div>
+                                        </div>
+                                        <div class="ln_solid"></div>
+                                        <label>Cantidad y Calibre de Origen</label>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Cantidad Origen <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="number" id="CantidadOrigen" name="CantidadOrigen" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Calibre Origen <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.DropDownList("CalibreOrigen", (IEnumerable<SelectListItem>)ViewBag.CalibreOrigen, "Seleccione Calibre Origen", new { @class = "form-control", @required = "required", @ID = "CalibreOrigen" })
+                                            </div>
+                                        </div>
+                                        <div class="ln_solid"></div>
+                                        <label>Cantidad y Calibre Destino</label>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Cantidad Destino<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="number" id="CantidadDestino" name="CantidadOrigen" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Calibre Destino</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.DropDownList("CalibreDestino", (IEnumerable<SelectListItem>)ViewBag.CalibreDestino, "Seleccione Calibre Destino", new { @class = "form-control", @required = "required", @ID = "CalibreDestino" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Seleccione Contenedor Destino</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.DropDownList("selectDestino", (IEnumerable<SelectListItem>)ViewBag.ZonaCultivo, "Seleccione Contenedor de Destino", new { @class = "form-control", @required = "required", @ID = "selectDestino" })
+                                            </div>
+                                        </div>
+                                        <div class="ln_solid"></div>
+                                        <label>Cantidad y Calibre Cosechado</label>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Volumen de la Muestra (ml) <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="number" id="VolumenMuestra" name="VolumenMuestra" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Cantidad Contada <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="number" id="cantidadMuestra" name="cantidadMuestra" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Litros en el Contenedor<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text" id="litrosContenedor" name="litrosContenedor" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Cantidad Total<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text" id="volumenTotal" name="volumenTotal" disabled="disabled" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Observaciones</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <textarea id="txtObservaciones" class="form-control col-md-7 col-xs-12" name="txtObservaciones" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="100"
+                                                          data-parsley-validation-threshold="10"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="ln_solid"></div>
+                                        <div class="form-group">
+                                            <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                <button id="btnCerrarModal" data-dismiss="modal" class="btn btn-primary" type="button">Cancel</button>
+                                                <button type="submit" class="btn btn-success" id="btnGrabarDatos">Grabar</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="btnCerrarModal" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

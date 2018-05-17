@@ -1,0 +1,258 @@
+﻿
+@{
+    ViewBag.Title = "SeguimientoSemilla";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+ 
+<script src="~/WebJs/ProduccionJS/SeguimientoFijacion.js"></script>
+<div class="right_col" role="main">
+    <h3>@ViewBag.Message</h3>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Listado de Seguimiento Fijación</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <p class="text-muted font-13 m-b-30">
+                        Este listado muestra los seguimiento de Fijación existentes del sistema
+                    </p>
+                    <div class="table-responsive">
+                        @{
+        var grid = new WebGrid(Model, canPage: false);
+                        }
+                        @grid.GetHtml(
+htmlAttributes: new { id = "tblSeguimientosFijacion" },
+exclusions: new[] { "IdMortalidad", "FactoresMedicion", "CantidadMortalidad" },
+tableStyle: "table table-bordered",
+columns:
+grid.Columns(
+grid.Column(header: "BATCH", format: @<text>@item.NombreCultivo</text>),
+grid.Column(header: "Fecha Registro", format: @<text>@item.FechaRegistro </text>),
+grid.Column(header: "Fecha Sistema", format: @<text>@item.FechaSistema.ToString("dd/MM/yyyy") </text>),
+grid.Column(header: "Hora Sistema", format: @<text>@item.FechaSistema.ToString("HH:MM") </text>),
+grid.Column(header: "Calibre de Larvas", format: @<text>@item.NombreCalibreLarva</text>),
+grid.Column(header: "Cantidad de Larvas", format: @<text>@item.LarvasCantidad</text>),
+grid.Column(header: "Calibre Fijación", format: @<text>@item.NombreCalibreFijacion</text>),
+grid.Column(header: "Cantidad Fijación", format: @<text>@item.FijacionCantidad</text>),
+grid.Column(header: "Cantidad Cosecha", format: @<text>@item.CosechaCantidad</text>),
+grid.Column(header: "Calibre Semillas", format: @<text>@item.NombreCalibreSemilla</text>),
+grid.Column(header: "Acciones", format: @<button class="btn btn-success" type="button" data-toggle="modal" tooltip="Editar Parametro" data-target="#modalPopUpIngresoUsuario"
+                                                 onclick="EditaFijacion(
+                                                                     @item.IdSeguimientoFijacion,
+                                                                     @item.IdCultivo,
+                                                                    '@item.FechaRegistro',
+                                                                     @item.LarvasCantidad,
+                                                                     @item.LarvasCalibre,
+                                                                     @item.FijacionCantidad,
+                                                                     @item.FijacionCalibre,
+                                                                     @item.CosechaSemilla,
+                                                                     @item.SemillaCalibre,
+                                                                     @item.CosechaCantidad,
+                                                                     @item.NumeroEstanque,
+                                                                     @item.DensidadSiembra,
+                                                                     @item.IdMortalidad,
+                                                                     @item.CantidadMortalidad,
+                                                                    '@item.Observaciones'
+                                                                     )">
+                        Editar
+                    </button>)
+
+))
+
+                    </div>
+
+                    <div id="divAlert"></div>
+                    <div class="form-group">
+                        <div>
+                            <button type="button" id="btnNuevaFijacion" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Agregar Seguimiento Fijación</button>
+                        </div>
+                    </div>
+
+                    <div id="modalPopUpIngresoUsuario" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">
+                                        <span aria-hidden="true">X</span>
+                                    </button>
+                                    <h4 class="modal-title" id="myModalLabel">Seguimiento Fijación Larvas</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+
+
+                                        <div style="display: none;">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Id Seguimiento Fijacion <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text" id="IdSeguimientoFijacion" value="-1" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Seguimiento al Batch: <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.DropDownList("nombreCultivo", (IEnumerable<SelectListItem>)ViewBag.RegistroCultivo, "Seleccione...", new { @class = "form-control", @required = "required", @ID = "selectNombreCultivo" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                                Fecha Registro <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-xs-12 xdisplay_inputx form-group has-feedback-right">
+                                                <input id="single_cal1" type="text" class="form-control has-feedback-right" placeholder="Fecha" aria-describedby="inputSuccess2Status">
+                                                <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                <span id="inputSuccess2Status" class="sr-only">(success)</span>
+
+                                            </div>
+                                        </div>
+                                        <div class="ln_solid"></div>
+                                        <label>
+                                            Larvas para Fijación
+                                        </label>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Cantidad Larvas <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="number" id="cantidadLarvas" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Calibre Larvas <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.DropDownList("CalibreLarvas", (IEnumerable<SelectListItem>)ViewBag.ParametroCalibreLarvas, "Seleccione Calibre Larvas", new { @class = "form-control", @required = "required", @ID = "selectCalibreLarvas" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Cantidad Fijación<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="number" id="cantidadFijacion" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Calibre Fijación <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.DropDownList("CalibreFijacion", (IEnumerable<SelectListItem>)ViewBag.ParametroCalibreFijacion, "Seleccione Calibre Fijación", new { @class = "form-control", @required = "required", @ID = "selectCalibreFijación" })
+                                            </div>
+                                        </div>
+                                        <div class="ln_solid"></div>
+                                        <label>
+                                            Cosecha, Calibre de Semilla y Cantidad
+                                        </label>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Cosecha Semillas<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="number" id="cosechaSemillas" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Calibre Semillas <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.DropDownList("CalibreSemillas", (IEnumerable<SelectListItem>)ViewBag.ParametroCalibreSemillas, "Seleccione Calibre Semillas", new { @class = "form-control", @required = "required", @ID = "selectCalibreSemillas" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Cantidad Semillas<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="number" id="cantidadSemillas" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="ln_solid"></div>
+                                        <label>
+                                            Otros Datos
+                                        </label>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Numero Estanque<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.DropDownList("idNumeroEstanque", (IEnumerable<SelectListItem>)ViewBag.Contenedor, "Seleccione Número Estanque", new { @class = "form-control", @required = "required", @ID = "idNumeroEstanque" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Densidad Siembra<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="number" id="IdDensidadSiembra" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Seleccione Mortalidad<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.DropDownList("TipoMortalidad", (IEnumerable<SelectListItem>)ViewBag.selectTipoM, "Seleccione...", new { @class = "form-control", @required = "required", @ID = "selectTipoM" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Cantidad Mortalidad<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="number" id="IdCantidadMortalidad" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Factor Medición</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.ListBox("FactorM", ViewBag.FactorM as MultiSelectList, new { @class = "select2_multiple form-control", @required = "required", @ID = "FactorM" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Observaciones</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <textarea id="txtObservaciones" class="form-control col-md-7 col-xs-12" name="txtObservaciones" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="100"
+                                                          data-parsley-validation-threshold="10"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="ln_solid"></div>
+                                        <div class="form-group">
+                                            <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                <button id="btnCerrarModal" data-dismiss="modal" class="btn btn-primary" type="button">Cancel</button>
+                                                <button type="submit" class="btn btn-success" id="btnGrabarDatos">Grabar</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="btnCerrarModal" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

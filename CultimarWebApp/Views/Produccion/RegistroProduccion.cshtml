@@ -1,0 +1,196 @@
+﻿
+@{
+    ViewBag.Title = "RegistroProduccion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/WebJs/ProduccionJS/RegistroProduccion.js"></script>
+<div class="right_col" role="main">
+    <h3>@ViewBag.Message</h3>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Listado de Registro Inicial de Producción Larvas</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <p class="text-muted font-13 m-b-30">
+                        Este listado muestra los Registro de produccion inicial de larvas ingresados en el sistema, para luego hacerles seguimiento
+                    </p>
+                    <div class="table-responsive">
+                        @{
+        var grid = new WebGrid(Model, canPage: false);
+                        }
+                        @grid.GetHtml(
+htmlAttributes: new { id = "tblRegistroProduccion" },
+exclusions: new[] { "IdMortalidad" },
+tableStyle: "table table-bordered",
+columns:
+grid.Columns(
+grid.Column(columnName: "NombreRegistro", header: "Batch", format: @<text>@item.NombreRegistro</text>),
+grid.Column(columnName: "CantidadProductoresMachos", header: "Machos", format: @<text>@item.CantidadProductoresMachos</text>),
+grid.Column(columnName: "CantidadProductoresHembras", header: "Hembras", format: @<text>@item.CantidadProductoresHembras</text>),
+grid.Column(columnName: "FechaRegistro", header: "F.Registro", format: @<text>@item.FechaRegistro.ToString("dd/MM/yyyy")</text>),
+grid.Column(columnName: "CantidadFecundada", header: "C. Fecundada", format: @<text>@item.CantidadFecundada</text>),
+grid.Column(columnName: "NumeroDesoveTemporada", header: "N°Desove", format: @<text>@item.NumeroDesoveTemporada</text>),
+grid.Column(columnName: "CantidadSembrada", header: "C.Sembrada", format: @<text>@item.CantidadSembrada</text>),
+grid.Column(columnName: "EstanquesUtilizado", header: "Estanque Utilizado", format: @<text>@item.NombreEstanque</text>),
+grid.Column(columnName: "DensidadSiembra", header: "Densidad Siembra", format: @<text>@item.DensidadSiembra</text>),
+grid.Column(format: @<button class="btn btn-success" type="button" data-toggle="modal" tooltip="Editar Parametro" data-target="#modalPopUpIngresoUsuario"
+                             onclick="EditaProduccion(@item.IdRegistroProduccion,
+                                                @item.IdTipoIdentificacion,
+                                               '@item.CantidadProductoresMachos',
+                                               '@item.CantidadProductoresHembras',
+                                               '@item.CantidadFecundada',
+                                               '@item.NumeroDesoveTemporada',
+                                               '@item.CantidadSembrada',
+                                               '@item.FactoresMedicion',
+                                               '@item.NumeroEstanquesUtilizado',
+                                               '@item.DensidadSiembra',
+                                               '@item.Observaciones')">
+                        Editar
+                    </button>))
+)
+                    </div>
+
+
+                    <div id="divAlert"></div>
+                    <div class="form-group">
+                        <div>
+                            <button type="button" id="btnNuevo" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Registro Inicial Producción Larvas</button>
+                        </div>
+                    </div>
+
+                    <div id="modalPopUpIngresoUsuario" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">
+                                        <span aria-hidden="true">X</span>
+                                    </button>
+                                    <h4 class="modal-title" id="myModalLabel">Ingresa los datos solicitados</h4>
+                                </div>
+                                <div class="modal-body">
+                                    @*<form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">*@
+
+                                    <div id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                                        <div style="display: none;">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Id Produción <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text" id="IdRegistro" value="-1" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Nombre Batch<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @*<input type="text" id="txtNombreRegistro" required="required" class="form-control col-md-7 col-xs-12">*@
+                                                @Html.DropDownList("RegistroInicial", (IEnumerable<SelectListItem>)ViewBag.RegistroInicial, "Seleccione...", new { @class = "form-control", @required = "required", @ID = "selectNombreBatch" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Cant. Productores Machos <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="number" id="CantidadPMachos" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Cant. Productores Hembras <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="number" id="CantidadPHembras" data-validate-minmax="1,999999999999999" required="required" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Cantidad Fecundada <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="number" id="CantidadFecundada" data-validate-minmax="1,999999999999999" required="required" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                N° Desove Temporada<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="number" id="NroDesoveTemporada" data-validate-minmax="1,999999999999999" required="required" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Cantidad Sembrada<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="number" id="CantidadSembrada" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Factores Medicion <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.ListBox("FactorM", ViewBag.FactorM as MultiSelectList, new { @class = "select_multiple form-control", @required = "required", @ID = "FactorM" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Número de Estanque<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.DropDownList("RegistroInicial", (IEnumerable<SelectListItem>)ViewBag.EstanqueLarvas, "Seleccione...", new { @class = "form-control", @required = "required", @ID = "NroEstanque" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                                Densidad de Siembra<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text" id="DensidadSiembra" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Observaciones</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <textarea id="txtObservaciones" class="form-control col-md-7 col-xs-12" name="txtObservaciones" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="100"
+                                                          data-parsley-validation-threshold="10"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="ln_solid"></div>
+                                        <div class="form-group">
+                                            <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                <button id="btnCerrarModal" data-dismiss="modal" class="btn btn-primary" type="button">Cancel</button>
+                                                <button type="submit" class="btn btn-success" id="btnGrabarDatos">Grabar</button>
+                                            </div>
+                                        </div>
+                                        @*</form>*@
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="btnCerrarModal" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,185 @@
+﻿
+@{
+    ViewBag.Title = "RegistroInicialMar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/WebJs/ProduccionJS/RegistroInicialMar.js"></script>
+<div class="right_col" role="main">
+    <h3>@ViewBag.Message</h3>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Listado de Registro Inicial Mar</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <p class="text-muted font-13 m-b-30">
+                        Este listado Muestra el Registro inicial mar según lo ingresado en el sistema.
+                    </p>
+                    <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        @{
+        var grid = new WebGrid(Model, canPage: false);
+                        }
+                        @grid.GetHtml(
+          htmlAttributes: new { id = "tblRegistroInicialMar" },
+          tableStyle: "table table-striped table-bordered dataTable no-footer",
+          columns:
+              grid.Columns(
+                  
+
+                  grid.Column(header: "Nombre BATCH", format: @<text>@item.NombreCultivo</text>),
+                  grid.Column(header: "Ubicación Oceanica", format: @<text>@item.NombreUbicacion</text>),
+                  grid.Column(header: "Fecha Ingreso", format: @<text>@item.FechaIngreso.ToString("dd/MM/yyyy")</text>),
+grid.Column(header: "Fecha Futuro Desobe", format: @<text>@item.FechaFuturoDesdoble.ToString("dd/MM/yyyy")</text>),
+grid.Column(header: "Origen", format: @<text>@item.NombreOrigen</text>),
+grid.Column(header: "Cantidad Origen", format: @<text>@item.CantidadOrigen</text>),
+grid.Column(header: "Tipo de Sistema", format: @<text>@item.NombreSistema</text>),
+grid.Column(header: "Cantidad de Sistema", format: @<text>@item.Cantidad</text>),
+grid.Column(header: "Tipo de Mortalidad", format: @<text>@item.NombreMortalidad</text>),
+grid.Column(header: "Editar", format: @<button class="btn btn-success" type="button" data-toggle="modal" tooltip="Editar Parametro" data-target="#modalPopUpIngresoMicroAlga" onclick="EditaRegistro(
+                                                                                         @item.IdRegistro,'@item.NombreCultivo',@item.CantidadMortalidad,
+                                                                                         @item.UbicacionOceanica,
+                                                                                        '@item.FechaIngreso.ToString("MM/dd/yyyy")',
+                                                                                        '@item.FechaFuturoDesdoble.ToString("MM/dd/yyyy")',
+                                                                                         @item.CantidadOrigen,
+                                                                                         @item.idOrigen,
+                                                                                         @item.IdTipoSistema,
+                                                                                         @item.Cantidad,
+                                                                                         @item.IdMortalidad,
+                                                                                         '@item.Observaciones'
+                                                                                         )">
+                        Editar
+                    </button>))
+)
+
+                    </div>
+
+                    <div id="divAlert"></div>
+                    <div class="form-group">
+                        <div>
+                            <button type="button" id="btnPopUpRegistroInicialMar" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Ingresar Registro Inicial Mar</button>
+                        </div>
+                    </div>
+
+                    <div id="modalPopUpIngresoMicroAlga" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                    <h4 class="modal-title" id="myModalLabel">Ingresar Registro Inicial Mar</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <h4>Ingrese los datos solicitados</h4>
+                                    <div class="x_content">
+                                        <br />
+                                        <input type="text" id="IdRegistroInicialMar" style="display: none;">
+                                        @*<form class="form-horizontal form-label-left input_mask">*@
+                                        <div class="form-horizontal form-label-left input_mask">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                                    Nombre BATCH <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    <input type="text" id="nombreCultivo" required="required" class="form-control col-md-7 col-xs-12">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Ubicación Oceánica<span class="required">*</span></label>
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    @Html.DropDownList("ubicacionOceanica", (IEnumerable<SelectListItem>)ViewBag.ParametroUbicacionOceanica, "Seleccione Ubicación Oceánica", new { @class = "form-control", @required = "required", @ID = "ubicacionOceanica" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha Ingreso Mar<span class="required">*</span></label>
+                                                <div class="col-md-9 col-sm-9 col-xs-12 has-feedback-right">
+                                                    <input type="text" class="form-control has-feedback-right" id="single_cal1" placeholder="01/01/0001" aria-describedby="inputSuccess2Status">
+                                                    <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                    <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha futuro Desdoble<span class="required">*</span></label>
+                                                <div class="col-md-9 col-sm-9 col-xs-12 has-feedback-right">
+                                                    <input type="text" class="form-control has-feedback-right" id="single_cal2" placeholder="01/01/0001" aria-describedby="inputSuccess3Status">
+                                                    <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                    <span id="inputSuccess3Status" class="sr-only">(success)</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Ingresa Cantidad Origen<span class="required">*</span></label>
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    <input type="number" id="CantidadOrigen" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Ingresa Calibre Origen<span class="required">*</span></label>
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    @Html.DropDownList("CalibreOrigen", (IEnumerable<SelectListItem>)ViewBag.ParametroCalibre, "Seleccione Calibre de Origen", new { @class = "form-control", @required = "required", @ID = "CalibreOrigen" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tipo Sistema<span class="required">*</span></label>
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    @Html.DropDownList("TipoSistema", (IEnumerable<SelectListItem>)ViewBag.ParametrosTipoSistema, "Seleccione Tipo Sistema", new { @class = "form-control", @required = "required", @ID = "selectTipoSistema" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Cantidad Final<span class="required">*</span></label>
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    <input type="number" id="Cantidad" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tipo Mortalidad<span class="required">*</span></label>
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    @Html.DropDownList("TipoMortalidad", (IEnumerable<SelectListItem>)ViewBag.ParametrosTipoMortalidad, "Seleccione Tipo Mortalidad", new { @class = "form-control", @required = "required", @ID = "selectTipoMortalidad" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Cantidad Mortalidad<span class="required">*</span></label>
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    <input type="number" id="CantidadMortalidad" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Observaciones</label>
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    <textarea id="txtObservaciones" class="form-control col-md-7 col-xs-12" name="txtObservaciones" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="100"
+                                                              data-parsley-validation-threshold="10"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="ln_solid"></div>
+                                            <div class="form-group">
+                                                <div class="col-md-9 xdisplay_inputx form-group has-feedback">
+                                                    <button class="btn btn-primary" type="reset" id="btnResetPopUp">Resetear</button>
+                                                    <button type="submit" class="btn btn-success" id="btnGrabarDatos">Grabar</button>
+                                                </div>
+                                            </div>
+                                            @*</form>*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="btnCerrarModal" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

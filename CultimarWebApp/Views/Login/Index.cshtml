@@ -1,0 +1,85 @@
+﻿@using CultimarWebApp.Models
+@model LoginViewModel
+
+
+@{
+    Layout = null;
+    ViewBag.Title = "Iniciar sesión";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="~/Favicon.png" type="image/x-icon">
+    <title>Inicio de Sesión | Produce Software Ltda.</title>
+    <link href="~/Scripts/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Scripts/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Scripts/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <link href="~/Scripts/vendors/animate.css/animate.min.css" rel="stylesheet">
+    <link href="~/Content/css/custom.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url(/images/DJI_0033.JPG) !important;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div class="login_wrapper">
+            <div class="animate form login_form">
+
+                <section class="login_content">
+                    @using (Html.BeginForm("Index", "Login", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <img src="~/images/logocultimar.png" width="150" height="130" />
+                        <h4>Inicio de Sesión</h4>
+                        <hr />
+                        @Html.ValidationSummary(true, string.Empty, new { @class = "alert text-danger" })
+                        <div>
+                            <div>
+                                @Html.TextBoxFor(m => m.Rut, new { placeholder = "Rut, ejemplo: XXXXXXXX-X", @class = "form-control", @required = "required" })
+                                @*@Html.ValidationMessageFor(m => m.Rut, string.Empty, new { @class = "alert alert-danger", @role="alert" })*@
+                                @ViewBag.MyMessageToUsers
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                @Html.PasswordFor(m => m.Password, new { placeholder = "Contraseña", @class = "form-control", @required = "required" })
+                                @*@Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })*@
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" class="btn btn-default submit" value="Iniciar Sesión" />
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="separator">
+                            <div class="clearfix"></div>
+                            <br />
+                            <div>
+                                <h2><i class="fa fa-cogs"></i> Cultimar Chile</h2>
+                                <p>Sistema realizado para seguimiento y gestion de cultivos.</p>
+                            </div>
+                        </div>
+                        <p>
+                            <small>©@DateTime.Now.Year <a href="http://www.producesoftware.cl">Produce Software Ltda.</a></small>
+                        </p>
+
+                    }
+                </section>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

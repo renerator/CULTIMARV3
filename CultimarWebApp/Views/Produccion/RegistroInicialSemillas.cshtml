@@ -1,0 +1,173 @@
+﻿
+@{
+    ViewBag.Title = "RegistroInicialSemillas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/WebJs/ProduccionJS/RegistroInicialSemilla.js"></script>
+<div class="right_col" role="main">
+    <h3>@ViewBag.Message</h3>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Listado de Registro Inicial Semillas</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <p class="text-muted font-13 m-b-30">
+                        Este listado muestra los registro ingresados al sistema para posteriormente hacer el seguimiento.
+                    </p>
+                    <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        @{
+        var grid = new WebGrid(Model, canPage: false);
+                        }
+                        @grid.GetHtml(
+htmlAttributes: new { id = "tblRegistroInicialSemillas" },
+tableStyle: "table table-striped table-bordered dataTable no-footer",
+columns:
+grid.Columns(
+grid.Column(header: "Nombre Contenedor", format: @<text>@item.NombreContenedor</text>),
+grid.Column(header: "Nombre BATCH", format: @<text>@item.NombreRegistroLarval</text>),
+grid.Column(header: "Calibre Semilla", format: @<text>@item.NombreCalibreSemilla</text>),
+grid.Column(header: "Fecha Registro", format: @<text>@item.FechaRegistroInicial.ToString("dd/MM/yyyy")</text>),
+grid.Column(header: "Fecha Desdoble Inicial", format: @<text>@item.FechaDesdobleInicial.ToString("dd/MM/yyyy")</text>),
+grid.Column(header: "Ploidia", format: @<text>@item.Ploidia</text>),
+
+grid.Column(header: "Editar", format: @<button class="btn btn-success" type="button" data-toggle="modal" tooltip="Editar Parametro" data-target="#modalPopUpIngresoRegistroInicial" onclick="EditaRegistroInicialSemilla(
+                                               @item.IdRegistroInicialSemilla,
+                                               @item.IdTipoContenedor,
+                                               @item.IdRegistroLarval,
+                                               @item.IdCalibre,
+                                               '@item.FechaRegistroInicial.ToString("MM/dd/yyyy")',
+                                               '@item.FechaDesdobleInicial.ToString("MM/dd/yyyy")',
+                                               '@item.Ploidia',
+                                               '@item.Muestreo',
+                                               '@item.Observaciones',
+                                               @item.VolumenMuestra,
+                                               '@item.CantidadLitros'
+                                               )">
+                        Editar
+                    </button>))
+)
+
+                    </div>
+
+                    <div id="divAlert"></div>
+                    <div class="form-group">
+                        <div>
+                            <button type="button" id="btnPopUpRegistroInicial" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Ingresar Registro Pre-Semilla</button>
+                        </div>
+                    </div>
+
+                    <div id="modalPopUpIngresoRegistroInicial" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">Registro Inicial Semillas</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Ingrese los datos solicitados</h4>
+                        <div class="x_content">
+                            <br />
+                            <input type="text" id="IdRegistroInicialSemilla" style="display: none;">
+                            <form class="form-horizontal form-label-left input_mask">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tipo Contenedor Semillas</label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        @Html.DropDownList("selectTipoContenedor", (IEnumerable<SelectListItem>)ViewBag.ParametroContenedorSemillas, "Seleccione Tipo Contenedor", new { @class = "form-control", @required = "required", @ID = "selectTipoContenedor" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nombre Grupo Cultivo</label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        @Html.DropDownList("RegistroInicial", (IEnumerable<SelectListItem>)ViewBag.RegistroCultivo, "Seleccione Nombre BATCH", new { @class = "form-control", @required = "required", @ID = "selectRegistroInicial" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Calibre</label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        @Html.DropDownList("ParametroCalibre", (IEnumerable<SelectListItem>)ViewBag.ParametroCalibre, "Seleccione Calibre Semilla", new { @class = "form-control", @required = "required", @ID = "selectParametroCalibre" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha Registro</label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12 has-feedback-right">
+                                        <input type="text" class="form-control has-feedback-right" id="single_cal1" placeholder="01/01/0001" aria-describedby="inputSuccess2Status">
+                                        <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                        <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha Desdoble</label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12 has-feedback-right">
+                                        <input type="text" class="form-control has-feedback-right" id="single_cal2" placeholder="01/01/0001" aria-describedby="inputSuccess3Status">
+                                        <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                        <span id="inputSuccess3Status" class="sr-only">(success)</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Ploidia</label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <input type="text" id="ploidia" required="required" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Volumen de la Muestra</label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <input type="number" id="volumenMuestra" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Cantidad de Litros</label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <input type="text" id="cantidadLitros" required="required" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                </div>
+                                @*<div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Muestreo</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+                <input type="text" id="muestreo" required="required" class="form-control col-md-7 col-xs-12">
+            </div>
+        </div>*@
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Observaciones</label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <textarea id="txtObservaciones" class="form-control col-md-7 col-xs-12" name="txtObservaciones" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="100"
+                                                  data-parsley-validation-threshold="10"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="ln_solid"></div>
+                                <div class="form-group">
+                                    <div class="col-md-9 xdisplay_inputx form-group has-feedback">
+                                        <button class="btn btn-primary" type="reset" id="btnResetPopUp">Resetear</button>
+                                        <button type="submit" class="btn btn-success" id="btnGrabaRegistroInicialSemilla">Grabar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btnCerrarModal" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

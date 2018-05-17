@@ -1,0 +1,140 @@
+﻿
+@{
+    ViewBag.Title = "Usuarios";
+}
+
+
+@*<script type="text/javascript">
+    
+
+</script>*@
+<script src="~/WebJs/HomeJs/Usuario.js"></script>
+
+<div class="right_col" role="main">
+    <h3>@ViewBag.Message</h3>
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Listado de Usuarios del sistema</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <p class="text-muted font-13 m-b-30">
+                        Este listado muestra los usuarios existentes del sistema, podras autorizar a los usuarios con perfil de ingreso para que puedan modificar algun dato en el sistema, solo podras hacerlo en aquellos que tengan la opción.
+                    </p>
+                    <div class="table-responsive">
+                        @{
+                            var grid = new WebGrid(Model, canPage: false);
+                        }
+                        @grid.GetHtml(
+     htmlAttributes: new { id = "tblUsuarios" },
+ tableStyle: "table table-bordered",
+ columns:
+     grid.Columns(
+         grid.Column(columnName: "IdUsuario", header: "Identificador", format: @<text>@item.IdUsuario</text>),
+         grid.Column(columnName: "RUT", header: "Usuario", format: @<text>@item.RutUsuario</text>),
+         grid.Column(columnName: "Nombre", header: "Nombre Usuario", format: @<text>@item.NombreUsuario</text>),
+         grid.Column(columnName: "NombrePerfil", header: "Tipo Usuario", format: @<text>@item.NombrePerfilUsuario</text>),
+                            @*grid.Column(header: "Autorizar", format: @<button class="btn btn-success" onclick="EditaUsuarios(@item.IdUsuario)">Autorizar</button> ),*@
+         grid.Column(header: "Acción", format: item => item.IdPerfil == 2 & item.PuedeModificar ?
+                                         Html.Raw("<button class='btn btn-warning' onclick='QuitapermisoUsuarios(" + item.IdUsuario + ")'>Quitar Permiso</button>") :
+                                         item.IdPerfil == 2 ? Html.Raw("<button class='btn btn-success' onclick='EditaUsuarios(" + item.IdUsuario + ")'>Autorizar</button>") : Html.Raw(""))
+
+     ))
+
+                    </div>
+
+                    <div id="divAlert"></div>
+                    <div class="form-group">
+                        <div>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Agregar Usuario</button>
+                        </div>
+                    </div>
+
+                    <div id="modalPopUpIngresoUsuario" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                    <h4 class="modal-title" id="myModalLabel">Agregar Usuario al Sistema</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <h4>Ingrese los datos solicitados</h4>
+                                    <p>Recuerde asignar el perfil que corresponda a cada usuario, de lo contrario no podra acceder al sistema.</p>
+                                    <p>Los usuarios ingresan con RUT y Password al sistema.</p>
+                                    <div class="x_content">
+                                        <br />
+                                        <form class="form-horizontal form-label-left input_mask">
+                                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <input type="text" required="required" class="form-control has-feedback-left" id="inputSuccess2" placeholder="Nombre">
+                                                <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <input type="text" required="required" class="form-control" id="inputSuccess3" placeholder="Apellido">
+                                                <span class="fa fa-user form-control-feedback right" aria-hidden="true"></span>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <input type="text" required="required" class="form-control has-feedback-left" id="inputSuccess4" placeholder="Rut: XXXXXXXX-X">
+                                                <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <input type="password" required="required" class="form-control" id="inputSuccess5" placeholder="Password">
+                                                <span class="fa fa-user form-control-feedback right" aria-hidden="true"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Seleccione Perfil<span class="required">*</span></label>
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    @Html.DropDownList("Perfil", (IEnumerable<SelectListItem>)ViewBag.Perfil, "Seleccione..." , new { @class = "form-control", @ID = "selectPerfil", @required = "required" })
+                                                    </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">
+                                                    Email <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    <input type="email" id="email" name="email" required="required" class="form-control col-md-9 col-xs-12">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">
+                                                    Confirma Email <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    <input type="email" id="email2" name="confirm_email" data-validate-linked="email" required="required" class="form-control col-md-9 col-xs-12">
+                                                </div>
+                                            </div>
+                                            <div class="ln_solid"></div>
+                                            <div class="form-group">
+                                                <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                    <button class="btn btn-primary" type="reset">Resetear</button>
+                                                    <button type="submit" class="btn btn-success" id="btnGrabarDatos">Grabar</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="btnCerrarModal" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

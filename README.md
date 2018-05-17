@@ -1,0 +1,5 @@
+# CultimarV2
+Proyecto Cultimar
+NO SUBIR DLL
+WEB CONFIG
+TAMPOCO CARPETA .VS
