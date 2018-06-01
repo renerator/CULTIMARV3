@@ -14,7 +14,8 @@ function EditaFijacion(
     _DensidadSiembra,
     _IdMortalidad,
     _CantidadMortalidad,
-    _Observaciones
+    _Observaciones,
+    _FactoresMedicion
 ) {
     $("#IdSeguimientoFijacion").val(_IdSeguimientoFijacion);
     $("#selectNombreCultivo").val(_IdCultivo);
@@ -30,6 +31,8 @@ function EditaFijacion(
     $("#selectTipoM").val(_IdMortalidad);
     $("#IdCantidadMortalidad").val(_CantidadMortalidad);
     $("#txtObservaciones").val(_Observaciones);
+    $("#single_cal1").val(_FechaRegistro);
+    $("#FactorM").val(_FactoresMedicion);//FactoresMedicion
 }
 
 

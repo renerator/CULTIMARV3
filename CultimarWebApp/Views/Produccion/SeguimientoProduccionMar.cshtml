@@ -70,7 +70,7 @@ grid.Column(header: "Sistema Destino", format: @<text>@item.NombreSistemaDestino
     @item.VolumenMuestra,
     '@item.VolumenTotal',
     '@item.LitrosContenedor',
-                                                   @item.UbicacionOceanica)">
+                                                   @item.UbicacionOceanica, @item.CantidadMortalidad)">
                         Editar
                     </button>))
 )
@@ -121,6 +121,12 @@ grid.Column(header: "Sistema Destino", format: @<text>@item.NombreSistemaDestino
                                                 </div>
                                             </div>
                                             <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Cantidad Mortalidad<span class="required">*</span></label>
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    <input type="number" id="cantidadMortalidad" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha Desdoble<span class="required">*</span></label>
                                                 <div class="col-md-9 col-sm-9 col-xs-12 has-feedback-right">
                                                     <input type="text" class="form-control has-feedback-right" id="single_cal1" placeholder="01/01/0001" aria-describedby="inputSuccess2Status">
@@ -149,11 +155,11 @@ grid.Column(header: "Sistema Destino", format: @<text>@item.NombreSistemaDestino
                                                 </div>
                                             </div>
                                             @*<div class="form-group">
-                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Cantidad Sistema Origen<span class="required">*</span></label>
-                                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                                    <input type="number" id="CantidadSistemaOrigen" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
-                                                </div>
-                                            </div>*@
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Cantidad Sistema Origen<span class="required">*</span></label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+                <input type="number" id="CantidadSistemaOrigen" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
+            </div>
+        </div>*@
                                             <div class="form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Ubicación de Origen<span class="required">*</span></label>
                                                 <div class="col-md-9 col-sm-9 col-xs-12">

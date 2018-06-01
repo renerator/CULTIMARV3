@@ -72,7 +72,7 @@ namespace CultimarWebApp.Utils.DAO
                     resultadoListado.NombreCalibreOrigen = validador != null ? data.Rows[i].Field<string>("CalibreOrigen") : "Sin Asignación";
 
                     validador = data.Rows[i].Field<object>("CantidadDestino");
-                    resultadoListado.CantidadDestino = validador != null ? data.Rows[i].Field<int>("CantidadOrigen") : 0;
+                    resultadoListado.CantidadDestino = validador != null ? data.Rows[i].Field<int>("CantidadDestino") : 0;
 
                     validador = data.Rows[i].Field<object>("IdCalibreDestino");
                     resultadoListado.IdDestino = validador != null ? data.Rows[i].Field<int>("IdCalibreDestino") : 0;

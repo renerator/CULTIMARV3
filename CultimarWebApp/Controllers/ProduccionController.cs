@@ -806,7 +806,8 @@ namespace CultimarWebApp.Controllers
             , int _VolumenMuestra
             , string _VolumenTotal
             , string _LitrosContenedor
-            , int _UbicacionOceanica)
+            , int _UbicacionOceanica
+            , int _cantidadMortalidad)
         {
             var datosUsuario = new ObjetoLogin();
             datosUsuario = (ObjetoLogin)Session["DatosUsuario"];
@@ -840,6 +841,7 @@ namespace CultimarWebApp.Controllers
                         ,VolumenTotal = Convert.ToDouble(_VolumenTotal)
                         ,LitrosContenedor = Convert.ToDouble(_LitrosContenedor)
                         ,UbicacionOceanica = _UbicacionOceanica
+                        ,CantidadMortalidad = _cantidadMortalidad
                     };
                     if (_IdSeguimiento != -1)
                     {

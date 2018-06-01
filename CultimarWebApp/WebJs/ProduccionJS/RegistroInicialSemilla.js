@@ -35,6 +35,8 @@ $(document).ready(function () {
         $("#ploidia").val("");
         $("#muestreo").val("");
         $("#txtObservaciones").val("");
+        $("#volumenMuestra").val("");
+        $("#cantidadLitros").val("");
     });
 
     $("#btnGrabaRegistroInicialSemilla").click(function () {

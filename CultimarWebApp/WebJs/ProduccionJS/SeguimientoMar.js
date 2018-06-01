@@ -6,7 +6,7 @@ _FechaDesdoble,
 _CantidadOrigen,
 _IdCalibreOrigen,
 _IdUbicacionOrigen,
-    _IdUbicacionDestino,
+_IdUbicacionDestino,
 _IdTipoSistema,
 _CantidadSistemaOrigen,
 _IdSistemaOrigen,
@@ -18,7 +18,9 @@ _Observaciones,
 _CantidadMuestra,
 _VolumenMuestra,
 _VolumenTotal,
-_LitrosContenedor, _UbicacionOceanica) {
+_LitrosContenedor,
+_UbicacionOceanica,
+_CantidadMortalidad) {
     $("#IdRegistroSeguimiento").val(_IdSeguimiento);
     $("#NombreCultivo").val(_IdRegistroInicial);
     $("#selectTipoMortalidad").val(_IdMortalidad);
@@ -39,6 +41,7 @@ _LitrosContenedor, _UbicacionOceanica) {
     $("#volumenTotal").val(_VolumenTotal);
     $("#litrosContenedor").val(_LitrosContenedor);
     $("#selectubicacionOceanica").val(_UbicacionOceanica);
+    $("#cantidadMortalidad").val(_CantidadMortalidad);
 }
 
 function formateaFecha(fechaInput) {
@@ -97,7 +100,7 @@ $(document).ready(function () {
         $("#VolumenMuestra").val(0);
         $("#volumenTotal").val(0);
         $("#litrosContenedor").val(0);
-        
+        $("#cantidadMortalidad").val(0);
         $("#selectubicacionOceanica").val("");
 
     });
@@ -156,6 +159,7 @@ $(document).ready(function () {
         var VolumenTotal = $("#volumenTotal").val();
         var LitrosContenedor = $("#litrosContenedor").val();
         var ubicacionOceanica = $("#selectubicacionOceanica").val();
+        var cantidadMortalidad = $("#cantidadMortalidad").val();
         VolumenTotal = VolumenTotal.replace(".", ",");
         LitrosContenedor = LitrosContenedor.replace(".", ",");
 
@@ -193,7 +197,8 @@ $(document).ready(function () {
                     _VolumenMuestra: VolumenMuestra,
                     _VolumenTotal: VolumenTotal,
                     _LitrosContenedor: LitrosContenedor,
-                    _UbicacionOceanica: ubicacionOceanica
+                    _UbicacionOceanica: ubicacionOceanica,
+                    _cantidadMortalidad: cantidadMortalidad
                 },
 
                 async: true,

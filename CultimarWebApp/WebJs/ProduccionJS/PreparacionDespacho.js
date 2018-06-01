@@ -104,7 +104,7 @@ $(document).ready(function () {
         var cantidad = $("#cantidadContada").val();
         var litros = $("#litrosContenedor").val();
         var suma = (((cantidad * 1000) / volumen)) * litros;
-        var decimal = suma.toFixed(3);
+        var decimal = suma.toFixed(0);
         $("#volumenTotal").val(decimal);
         
         
@@ -115,7 +115,7 @@ $(document).ready(function () {
             var volumen = $("#VolumenMuestra").val();
             var litros = $("#litrosContenedor").val();
             var suma = (((cantidad * 1000) / volumen)) * litros;
-            var decimal = suma.toFixed(3);
+            var decimal = suma.toFixed(0);
             $("#volumenTotal").val(decimal);
         }
         else {
@@ -129,18 +129,18 @@ $(document).ready(function () {
 
     $("#litrosContenedor").change(function () {
         var litros = $("#litrosContenedor").val();
-        if (validarSiNumero(litros)) {
+        //if (validarSiNumero(litros)) {
             var cantidad = $("#cantidadContada").val();
             var volumen = $("#VolumenMuestra").val();
             var litros = $("#litrosContenedor").val();
             var suma = (((cantidad * 1000) / volumen)) * litros;
-            var decimal = suma.toFixed(3);
+            var decimal = suma.toFixed(0);
             $("#volumenTotal").val(decimal);
-        }
-        else {
-            alert("El Campo Litros Contenedor debe ser numerico");
-            $("#litrosContenedor").val("");
-        }
+        //}
+        //else {
+        //    alert("El Campo Litros Contenedor debe ser numerico");
+        //    $("#litrosContenedor").val("");
+        //}
 
 
     });

@@ -8,6 +8,15 @@ namespace CultimarWebApp.Utils.Objetos
     public class ObjetoSeguimientoMar
     {
 
+        private int _cantidadMortalidad;
+        public int CantidadMortalidad
+        {
+            get { return _cantidadMortalidad; }
+            set { _cantidadMortalidad = value; }
+        }
+
+
+
         private int _ubicacionOceanica;
         public int UbicacionOceanica
         {
