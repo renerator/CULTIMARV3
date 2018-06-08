@@ -1,5 +1,5 @@
 ﻿
-function EditaRegistroInicialSemilla(idRegistroInicialSemilla, idTipoContenedor, idRegistroLarval, idCalibre, FechaRegistro, FechaDesdoble, Ploidia, Muestreo, Observaciones, volumenMuestra, cantidadLitros) {
+function EditaRegistroInicialSemilla(idRegistroInicialSemilla, idTipoContenedor, idRegistroLarval, idCalibre, FechaRegistro, FechaDesdoble, Ploidia, Muestreo, Observaciones, volumenMuestra, cantidadLitros, LitrosdecimalContenedor, CantidadTotal) {
     $("#IdRegistroInicialSemilla").val(idRegistroInicialSemilla);
     $("#selectTipoContenedor").val(idTipoContenedor);
     $("#selectRegistroInicial").val(idRegistroLarval);
@@ -9,8 +9,10 @@ function EditaRegistroInicialSemilla(idRegistroInicialSemilla, idTipoContenedor,
     $("#ploidia").val(Ploidia);
     $("#muestreo").val(Muestreo);
     $("#txtObservaciones").val(Observaciones);
-    $("#volumenMuestra").val(volumenMuestra);
-    $("#cantidadLitros").val(cantidadLitros);
+    $("#VolumenMuestra").val(volumenMuestra);
+    $("#cantidadContada").val(cantidadLitros);
+    $("#litrosContenedor").val(LitrosdecimalContenedor);
+    $("#volumenTotal").val(CantidadTotal);
 
 }
 
@@ -35,9 +37,50 @@ $(document).ready(function () {
         $("#ploidia").val("");
         $("#muestreo").val("");
         $("#txtObservaciones").val("");
-        $("#volumenMuestra").val("");
         $("#cantidadLitros").val("");
+        $("#VolumenMuestra").val(0);
+        $("#cantidadContada").val(0);
+        $("#litrosContenedor").val(0);
+        $("#txtObservaciones").val("");
+        $("#volumenTotal").val(0);
     });
+
+
+    $("#VolumenMuestra").change(function () {
+        var volumen = $("#VolumenMuestra").val();
+        var cantidad = $("#cantidadContada").val();
+        var litros = $("#litrosContenedor").val();
+        var suma = (((cantidad * 1000) / volumen)) * litros;
+        var decimal = suma.toFixed(0);
+        $("#volumenTotal").val(decimal);
+
+    });
+    $("#cantidadContada").change(function () {
+        var cantidad = $("#cantidadContada").val();
+        if (validarSiNumero(cantidad)) {
+            var volumen = $("#VolumenMuestra").val();
+            var litros = $("#litrosContenedor").val();
+            var suma = (((cantidad * 1000) / volumen)) * litros;
+            var decimal = suma.toFixed(0);
+            $("#volumenTotal").val(decimal);
+        }
+        else {
+            alert("El Campo Cantidad Contada debe ser numerico");
+            $("#cantidadContada").val("");
+        }
+    });
+
+    $("#litrosContenedor").change(function () {
+        var litros = $("#litrosContenedor").val();
+        var cantidad = $("#cantidadContada").val();
+        var volumen = $("#VolumenMuestra").val();
+        var litros = $("#litrosContenedor").val();
+        litros = litros.replace(",", ".");
+        var suma = (((cantidad * 1000) / volumen)) * litros;
+        var decimal = suma.toFixed(0);
+        $("#volumenTotal").val(decimal);
+    });
+
 
     $("#btnGrabaRegistroInicialSemilla").click(function () {
         var ID = $("#IdRegistroInicialSemilla").val();
@@ -49,9 +92,16 @@ $(document).ready(function () {
         var Ploidia = $("#ploidia").val();
         var Muestreo = 0;//$("#muestreo").val();
         var Obs = $("#txtObservaciones").val();
-        var _cantidadLitros = $("#cantidadLitros").val();
-        var _volumenMuestra = $("#volumenMuestra").val();
-        _cantidadLitros = _cantidadLitros.replace(".", ",");
+        
+        var VolumenMuestra = $("#VolumenMuestra").val();
+        var CantidadContada = $("#cantidadContada").val();
+        var LitrosContenedor = $("#litrosContenedor").val();
+        var Observaciones = $("#txtObservaciones").val();
+        var CantidadTotal = $("#volumenTotal").val();
+        CantidadTotal = CantidadTotal.replace(".", ",");
+        CantidadContada = CantidadContada.replace(".", ",");
+        LitrosContenedor = LitrosContenedor.replace(".", ",");
+
         
         if (ID != null && ID != "") {
             ID = ID;
@@ -73,10 +123,11 @@ $(document).ready(function () {
                 ,Ploidia: Ploidia
                 ,Muestreo: Muestreo
                 , Observaciones: Obs
-                , cantidadLitros: _cantidadLitros
-                , volumenMuestra: _volumenMuestra
+                , cantidadLitros: CantidadContada
+                , volumenMuestra: VolumenMuestra
+                , _LitrosContenedor: LitrosContenedor
+                , _CantidadTotal: CantidadTotal
             },
-
             async: true,
             success: function (data) {
                 //if (data == 0) {

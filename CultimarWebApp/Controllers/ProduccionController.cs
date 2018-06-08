@@ -1012,6 +1012,9 @@ namespace CultimarWebApp.Controllers
                                         , string Observaciones
                                         , int volumenMuestra
                                         , string cantidadLitros
+                                        , string _CantidadMuestra
+                                        , string _LitrosContenedor
+                                        , string _CantidadTotal
                                       )
         {
             var datosUsuario = new ObjetoLogin();
@@ -1034,7 +1037,10 @@ namespace CultimarWebApp.Controllers
                         Muestreo = Muestreo,
                         Observaciones = Observaciones,
                         CantidadLitros = Convert.ToDouble(cantidadLitros),
-                        VolumenMuestra = volumenMuestra
+                        VolumenMuestra = volumenMuestra,
+                        CantidadMuestra = Convert.ToInt32(_CantidadMuestra),
+                        LitrosdecimalContenedor = Convert.ToDouble(_LitrosContenedor),
+                        CantidadTotal = Convert.ToDouble(_CantidadTotal)
                     };
 
                     if (IdRegistroInicial != -1)

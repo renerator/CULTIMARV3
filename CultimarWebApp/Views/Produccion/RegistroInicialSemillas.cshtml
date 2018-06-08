@@ -52,7 +52,9 @@ grid.Column(header: "Editar", format: @<button class="btn btn-success" type="but
                                                '@item.Muestreo',
                                                '@item.Observaciones',
                                                @item.VolumenMuestra,
-                                               '@item.CantidadLitros'
+                                               '@item.CantidadLitros',
+                                               '@item.LitrosdecimalContenedor',
+                                               '@item.CantidadTotal'
                                                )">
                         Editar
                     </button>))
@@ -122,24 +124,40 @@ grid.Column(header: "Editar", format: @<button class="btn btn-success" type="but
                                         <input type="text" id="ploidia" required="required" class="form-control col-md-7 col-xs-12">
                                     </div>
                                 </div>
+                                <div class="ln_solid"></div>
+                                <label>Otros Datos</label>
                                 <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Volumen de la Muestra</label>
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                        Volumen de la Muestra (ml) <span class="required">*</span>
+                                    </label>
                                     <div class="col-md-9 col-sm-9 col-xs-12">
-                                        <input type="number" id="volumenMuestra" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
+                                        <input type="number" id="VolumenMuestra" name="VolumenMuestra" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Cantidad de Litros</label>
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                        Cantidad Contada <span class="required">*</span>
+                                    </label>
                                     <div class="col-md-9 col-sm-9 col-xs-12">
-                                        <input type="text" id="cantidadLitros" required="required" class="form-control col-md-7 col-xs-12">
+                                        <input type="number" id="cantidadContada" name="cantidadMuestra" required="required" data-validate-minmax="1,999999999999999" class="form-control col-md-7 col-xs-12">
                                     </div>
                                 </div>
-                                @*<div class="form-group">
-            <label class="control-label col-md-3 col-sm-3 col-xs-12">Muestreo</label>
-            <div class="col-md-9 col-sm-9 col-xs-12">
-                <input type="text" id="muestreo" required="required" class="form-control col-md-7 col-xs-12">
-            </div>
-        </div>*@
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                        Litros en el Contenedor<span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <input type="text" id="litrosContenedor" name="litrosContenedor" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                        Cantidad Total<span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <input type="text" id="volumenTotal" name="volumenTotal" disabled="disabled" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Observaciones</label>
                                     <div class="col-md-9 col-sm-9 col-xs-12">

@@ -74,6 +74,13 @@ namespace CultimarWebApp.Utils.DAO
                     validador = data.Rows[i].Field<object>("CantidadLitros");
                     resultadoListado.CantidadLitros = validador != null ? data.Rows[i].Field<double>("CantidadLitros") : 0;
 
+                    validador = data.Rows[i].Field<object>("litrosContenedor");
+                    resultadoListado.LitrosdecimalContenedor = validador != null ? data.Rows[i].Field<double>("litrosContenedor") : 0;
+
+                    validador = data.Rows[i].Field<object>("cantidadTotal");
+                    resultadoListado.CantidadTotal = validador != null ? data.Rows[i].Field<double>("cantidadTotal") : 0;
+
+
 
                     listadoSemilla.Add(resultadoListado);
                 }
@@ -100,7 +107,9 @@ namespace CultimarWebApp.Utils.DAO
                                                                                                 {"@Muestreo", registroinicial.Muestreo },
                                                                                                 {"@Observaciones", registroinicial.Observaciones },
                                                                                                 {"@volumenMuestra",registroinicial.VolumenMuestra },
-                                                                                                { "@cantidadLitros", registroinicial.CantidadLitros }
+                                                                                                {"@cantidadLitros", registroinicial.CantidadLitros },
+                                                                                                {"@litrosContenedor", registroinicial.LitrosdecimalContenedor},
+                                                                                                {"@cantidadTotal", registroinicial.CantidadTotal}
                                                                                              });
                 
 

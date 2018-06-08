@@ -21,6 +21,15 @@ namespace CultimarWebApp.Utils.Objetos
         private string _muestreo;
         private string _observaciones;
         private string _zonaCultivo;
+
+        private double _cantidadTotal;
+        public double CantidadTotal
+        {
+            get { return _cantidadTotal; }
+            set { _cantidadTotal = value; }
+        }
+
+
         private double _litrosdecimalContenedor;
         public double LitrosdecimalContenedor
         {
